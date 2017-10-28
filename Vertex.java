@@ -57,8 +57,7 @@ public class Vertex implements Comparable<Vertex> {
         Vertex vertex = (Vertex) o;
 
         if (getX() != vertex.getX()) return false;
-        if (getDegree() != vertex.getDegree()) return false;
-        return getAdjacentV() != null ? getAdjacentV().equals(vertex.getAdjacentV()) : vertex.getAdjacentV() == null;
+        return true;
     }
 
     @Override

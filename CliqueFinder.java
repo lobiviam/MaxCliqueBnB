@@ -3,31 +3,39 @@ package com.company;
 import java.util.*;
 
 public class CliqueFinder {
-    private static Set<Integer> maxClique = new TreeSet<>();
+    long startTime;
+    long timeLimit;
+    private static List<Integer> maxClique = new LinkedList<>();
+
     public CliqueFinder() {
     }
 
-    public Set<Integer> findMaxClique(Graph graph) {
+    public List<Integer> findMaxClique(Graph graph) {
+        startTime = System.currentTimeMillis();
         List<Vertex> candidates = graph.getVertexList();
-        System.out.println(maxClique);
-        bnb(graph, maxClique, candidates);
-        System.out.println(maxClique);
+        bnb(graph, new LinkedList<>(), candidates);
+        System.out.println(maxClique.size());
+        for (Integer node : maxClique) {
+            System.out.print(node + " ");
+
+        }
         return maxClique;
     }
 
-    public void bnb(Graph graph, Set<Integer> curMaxClique, List<Vertex> candidates) {
-        if (candidates.isEmpty()) {
-            if (maxClique.size() < curMaxClique.size()) {
-                maxClique.clear();
-                maxClique.addAll(curMaxClique);
-            }
-            curMaxClique.remove(curMaxClique.toArray()[curMaxClique.size() - 1]);
+    public void bnb(Graph graph, List<Integer> curMaxClique, List<Vertex> candidates) {
+        if (maxClique.size() < curMaxClique.size()) {
+            maxClique.clear();
+            maxClique.addAll(curMaxClique);
+        }
+        if (candidates.size() == 0) {
+            curMaxClique.remove(curMaxClique.size() - 1);
+            return;
+        }
+        if (candidates.size() + curMaxClique.size() < maxClique.size()) {
+            return;
         }
         for (Vertex vertex : candidates) {
-            if (graph.getAdjacentVertexes(vertex).size() + curMaxClique.size() < maxClique.size()) {
-                continue;
-            }
-            Set<Integer> temp_clique = new TreeSet<>();
+            List<Integer> temp_clique = new LinkedList<>();
             temp_clique.addAll(curMaxClique);
             temp_clique.add(vertex.getX());
 
@@ -41,5 +49,8 @@ public class CliqueFinder {
 
     }
 
+    void setTimeLimit(String time) {
+        timeLimit = Long.valueOf(time);
+    }
 
 }
